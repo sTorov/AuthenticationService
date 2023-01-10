@@ -4,7 +4,6 @@ namespace AuthenticationService
     {
         static void Main(string[] args)
         {
-            StartApp();
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -13,8 +12,6 @@ namespace AuthenticationService
             .ConfigureWebHostDefaults(webBuilder => { 
                 webBuilder.UseStartup<Startup>();
             });
-
-        static void StartApp() => Logger.CreateLogDirectory();
     }
 }
 
