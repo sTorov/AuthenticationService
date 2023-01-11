@@ -8,18 +8,18 @@ namespace AuthenticationService
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ILogger, Logger>();   //Настройка DI контейнера
+            services.AddSingleton<ILogger, Logger>();                                       //Настройка DI контейнера
             services.AddSingleton<IUserRepository, UserRepository>();
 
-            var mapperConfig = new MapperConfiguration(v =>
+            var mapperConfig = new MapperConfiguration(v =>                                 //Добавляем автомаппер
             {
                 v.AddProfile(new MapperProfile());
             });
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddControllers();      //подключение контроллеров без представлений
-            services.AddSwaggerGen(option =>    //изменение отображаемой информации в загаловке Swagger
+            services.AddControllers();                                                      //подключение контроллеров без представлений
+            services.AddSwaggerGen(option =>                                                //изменение отображаемой информации в загаловке Swagger
             {
                 option.SwaggerDoc("v1", new OpenApiInfo
                 {
@@ -29,7 +29,7 @@ namespace AuthenticationService
                 });
             });
 
-            services.AddAuthentication(options => options.DefaultScheme = "Cookies")
+            services.AddAuthentication(options => options.DefaultScheme = "Cookies")        //Добавляем способ аутентификации пользователей
                 .AddCookie("Cookies", options =>
                 {
                     options.Events = new Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationEvents
@@ -41,6 +41,14 @@ namespace AuthenticationService
                         }
                     };
                 });
+
+            services.AddAuthorization(options =>                                            //Добавление политик для авторизации пользователей
+            {
+                options.AddPolicy("FromRussia", policy =>
+                {
+                    policy.RequireClaim("fromRussia", "True");                              //Использование Claim определённого типа с определённым значением
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -48,19 +56,19 @@ namespace AuthenticationService
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => {
+                app.UseSwagger();                                                           //Подключение Swagger
+                app.UseSwaggerUI(c => {                                                     //user interface Swagger
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "AuthenticationService v1");
                 });
             }
             
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseRouting();                                                               //Подключение маршрутизации
+            app.UseAuthentication();                                                        //middleware Аутентификации
+            app.UseAuthorization();                                                         //middleware Авторизации
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();     //подключаем маршрутизацию на контроллеры
+                endpoints.MapControllers();                                                 //подключаем маршрутизацию на контроллеры без представлений
             });
         }
     }

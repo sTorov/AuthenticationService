@@ -1,3 +1,4 @@
+using AuthenticationService.Exceptions;
 using AuthenticationService.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
@@ -9,6 +10,7 @@ using System.Security.Claims;
 
 namespace AuthenticationService.Controllers
 {
+    [ExceptionHandler]
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
@@ -23,8 +25,8 @@ namespace AuthenticationService.Controllers
             _mapper = mapper;
             _userRepository = userRepository;
 
-            logger.WriteEvent("Сообщение о событии в программе");
-            logger.WriteError("Сообщение об ошибке в программе");
+            _logger.WriteEvent("Сообщение о событии в программе");
+            _logger.WriteError("Сообщение об ошибке в программе");
         }
 
         [HttpGet]
@@ -46,7 +48,7 @@ namespace AuthenticationService.Controllers
             };
         }
 
-        [Authorize]
+        [Authorize(Roles = "Администратор, admin")]
         [HttpGet]
         [Route("viewmodel")]
         public UserViewModel GetUserViewModel()
@@ -72,6 +74,16 @@ namespace AuthenticationService.Controllers
             return userViewModel;
         }
 
+        [HttpGet]
+        [Route("rus")]
+        [Authorize(Policy = "FromRussia")]
+        public string FromRussia()
+        {
+            var login = HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType);
+            var role = HttpContext.User.FindFirst(ClaimsIdentity.DefaultRoleClaimType);
+            return $"Логин: {login.Value}\nРоль: {role.Value}\nТолько для граждан РФ";
+        }
+
         [HttpPost]
         [Route("authenticate")]
         public async Task<UserViewModel> Authenticate(string login, string password)
@@ -88,7 +100,9 @@ namespace AuthenticationService.Controllers
 
             var claims = new List<Claim>()
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login)
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name),
+                new Claim("fromRussia", user.Email.Contains(".ru").ToString())
             };
 
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(
