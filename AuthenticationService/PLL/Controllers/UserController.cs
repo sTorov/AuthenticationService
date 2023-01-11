@@ -1,5 +1,6 @@
-using AuthenticationService.Exceptions;
-using AuthenticationService.Repositories;
+using AuthenticationService.BLL.Models;
+using AuthenticationService.DAL.Repositories;
+using AuthenticationService.BLL.Exceptions;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Authentication;
 using System.Security.Claims;
 
-namespace AuthenticationService.Controllers
+namespace AuthenticationService.PLL.Controllers
 {
     [ExceptionHandler]
     [ApiController]
@@ -16,17 +17,12 @@ namespace AuthenticationService.Controllers
     public class UserController : ControllerBase
     {
         private IMapper _mapper;
-        private ILogger _logger;
         private IUserRepository _userRepository;
 
-        public UserController(ILogger logger, IMapper mapper, IUserRepository userRepository)
+        public UserController(IMapper mapper, IUserRepository userRepository)
         {
-            _logger = logger;
             _mapper = mapper;
             _userRepository = userRepository;
-
-            _logger.WriteEvent("Сообщение о событии в программе");
-            _logger.WriteError("Сообщение об ошибке в программе");
         }
 
         [HttpGet]

@@ -1,12 +1,12 @@
 ﻿using System.Net.Mail;
 
-namespace AuthenticationService
+namespace AuthenticationService.BLL.Models
 {
     public class UserViewModel
     {
         public Guid Id { get; set; }
-        public string FullName { get; set;}
-        public bool FromRussia { get; set;}
+        public string FullName { get; set; }
+        public bool FromRussia { get; set; }
 
         public UserViewModel(User user)
         {

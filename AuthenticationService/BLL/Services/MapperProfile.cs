@@ -1,6 +1,7 @@
-﻿using AutoMapper;
+﻿using AuthenticationService.BLL.Models;
+using AutoMapper;
 
-namespace AuthenticationService
+namespace AuthenticationService.BLL.Services
 {
     public class MapperProfile : Profile
     {

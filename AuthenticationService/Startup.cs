@@ -1,6 +1,9 @@
-﻿using AuthenticationService.Repositories;
+﻿using AuthenticationService.BLL.Middlewares.Extensions;
+using AuthenticationService.BLL.Services;
+using AuthenticationService.DAL.Repositories;
 using AutoMapper;
 using Microsoft.OpenApi.Models;
+using ILogger = AuthenticationService.BLL.Services.ILogger;
 
 namespace AuthenticationService
 {
@@ -61,6 +64,9 @@ namespace AuthenticationService
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "AuthenticationService v1");
                 });
             }
+
+            //app.UseMiddleware<LogMiddleware>();
+            app.UseLogMiddleware();                                                         //Добавление middleware (фильтра)
             
             app.UseRouting();                                                               //Подключение маршрутизации
             app.UseAuthentication();                                                        //middleware Аутентификации

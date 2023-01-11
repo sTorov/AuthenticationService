@@ -1,4 +1,4 @@
-﻿namespace AuthenticationService
+﻿namespace AuthenticationService.BLL.Services
 {
     public class Logger : ILogger
     {
@@ -9,7 +9,7 @@
         {
             rootLogDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "_logs", DateTime.Now.ToString("dd_MM_yy HH-mm-ss"));
 
-            if(!Directory.Exists(rootLogDir))
+            if (!Directory.Exists(rootLogDir))
                 Directory.CreateDirectory(rootLogDir);
         }
 
