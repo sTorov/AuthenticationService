@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AuthenticationService.BLL.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace AuthenticationService.BLL.Exceptions
+namespace AuthenticationService.BLL.Handlers
 {
-    public class ExceptionHandler : /*ActionFilterAttribute,*/ Attribute, IExceptionFilter
+    public class ExceptionHandler : ActionFilterAttribute, /*Attribute,*/ IExceptionFilter
     {
         public void OnException(ExceptionContext context)
         {

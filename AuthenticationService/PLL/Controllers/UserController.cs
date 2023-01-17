@@ -1,6 +1,5 @@
 using AuthenticationService.BLL.Models;
 using AuthenticationService.DAL.Repositories;
-using AuthenticationService.BLL.Exceptions;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -8,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Authentication;
 using System.Security.Claims;
+using AuthenticationService.BLL.Handlers;
 
 namespace AuthenticationService.PLL.Controllers
 {

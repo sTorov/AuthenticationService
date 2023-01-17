@@ -1,4 +1,5 @@
-﻿using AuthenticationService.BLL.Middlewares.Extensions;
+﻿using AuthenticationService.BLL.MapperProfile;
+using AuthenticationService.BLL.Middlewares.Extensions;
 using AuthenticationService.BLL.Services;
 using AuthenticationService.DAL.Repositories;
 using AutoMapper;
